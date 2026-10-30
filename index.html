@@ -443,57 +443,8 @@ if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol)){navigator.
 </body>
 </html>
 
-COCO BAG TRIAL TRACKER - standalone app
-Aston University / Coco360 Company Ltd
-
-Files
-  index.html  the whole app (forms, dashboard, Excel export, logos built in)
-  sw.js       lets the app work offline once opened from a web address
-
-No accounts and no server database. Records are stored in the browser on each
-device and passed on as .json data files (WhatsApp or email).
-
-1. PUT IT ONLINE (once, so the collector can open it on the phone)
-   Any plain web hosting works: upload index.html and sw.js to the same folder.
-   Free option, GitHub Pages:
-     a. Create a free account at github.com and a new public repository,
-        e.g. "cocobag-tracker".
-     b. Add file > Upload files: drag in index.html and sw.js, then Commit.
-     c. Settings > Pages > Source: "Deploy from a branch", branch "main",
-        folder "/ (root)", Save.
-     d. After a minute the address appears, e.g.
-        https://<your-username>.github.io/cocobag-tracker/
-   Aston University web space also works: ask IT to host the two files.
-
-2. DATA COLLECTOR (phone)
-   Open the address with signal, then browser menu > Add to Home screen.
-   Record data at the nursery. After each visit: Records & export >
-   Send new records > WhatsApp or email to Ebenezer.
-
-3. EBENEZER (laptop)
-   Open the same address (or just double-click index.html on the laptop).
-   Records & export > Choose data files > pick the .json files received.
-   Dashboard shows the comparison; Export to Excel saves CSV files.
-   Use the same browser on the laptop each time; data stays in that browser.
-   Keep the received .json files as the master backup.
-
-// Keeps the Coco Bag Trial Tracker working offline once it has been opened.
-const CACHE = "cocobag-tracker-v1";
-self.addEventListener("install", e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(["./", "./index.html"])).then(() => self.skipWaiting()));
-});
-self.addEventListener("activate", e => {
-  e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
-});
-self.addEventListener("fetch", e => {
-  if (e.request.method !== "GET") return;
-  e.respondWith(
-    fetch(e.request).then(res => {
-      if (res.ok && new URL(e.request.url).origin === location.origin) {
-        const copy = res.clone();
-        caches.open(CACHE).then(c => c.put(e.request, copy));
-      }
-      return res;
+COCO BAG TRIAL TRACKER 
+Aston University (c) 2026
     }).catch(() => caches.match(e.request).then(r => r || caches.match("./index.html")))
   );
 });
